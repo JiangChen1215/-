@@ -1,0 +1,295 @@
+package Bank;
+
+import java.util.Scanner;
+
+/*任务描述：编写一个银行新用户现金业务办理程序，使其模拟新用户到银行办理现金存取业务场景。
+          模拟银行欢迎用户和用户离开提醒动作。
+          用户的开户、存款和取款动作，在完成开户、存取款后要提示账户余额。*/
+/*实现思路：一个银行类，包含银行名字，用户名，密码，账户余额和交易金额等，银行名称不会变可用static修饰；
+          新用户到达银行调用欢迎方法，欢迎语句一样可定义static；
+          银行表示欢迎后会为用户办理开户手续，开户相当于创建银行实例，所以可以写入构造方法中，扣除开户费10元；
+          开户后可办理存款获取款业务，会改变账户余额，但密码错误或金额大于余额时，取款业务不能办理并提示用户。
+          用户离开时，银行提示携带好随身物品，此部分内容也不会变。
+          编写交易类，在此类中模拟新用户去银行办理业务场景。*/
+public class Bankoop {
+    private static String name = "华夏银行";
+    private String user;//用户名
+    private String tel;//手机号
+    private String pass;//密码
+    private String passq;//取款密码
+    private double balance;//余额
+    private double money;//交易金额
+    private String [][] up_er = new String[10][2];
+    private double [] bala = new double[10];
+    Scanner sc = new Scanner(System.in);
+    Bankoop (){
+      this.user = "陈德强";
+      this.pass = "cdq123";
+      this.tel = "13000001123";
+      this.balance = 10000;
+
+    }
+
+    /*public void userPass(int a) {
+
+        up_er [1][0] = this.user;
+        up_er [1][1] = this.pass;
+        up_er [2][0] = this.user;
+        up_er [2][1] = this.pass;
+        up_er [3][0] = this.user;
+        up_er [3][1] = this.pass;
+        //循环录入注册的用户信息，存储用户名，密码，余额；
+        for (int i = a; i<=a; i++){
+            for (int j = 0; j<=i; j++){
+                switch (j){
+                    case 0:
+                        this.up_er [i][j] = this.user;
+                        break;
+                    case 1:
+                        this.up_er [i][j] = this.pass;
+                    case 2:
+                        this.bala [j] = this.balance;
+                }
+            }
+        }
+    }*/
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    public void setAddBalance() {
+        this.balance += this.money;//增加余额
+    }
+
+    public void setSubBalance() {
+        this.balance -= this.money;//减少余额
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public String getUser() {
+        return this.user;
+    }
+
+    public String getTel() {
+        return this.tel;
+    }
+
+    //欢迎页面方法
+    public static void welcome() {
+        System.out.println("*********************************");
+        System.out.println("*************欢迎来到**************");
+        System.out.println("*************" + Bankoop.name + "**************");
+        System.out.println("*********************************");
+        System.out.println("************1.用户开户*************");
+        System.out.println("************2.用户登录*************");
+        System.out.println("************3.退出系统*************");
+        System.out.println("*********************************");
+        System.out.println("请输入菜单序号选择您要办理的业务：");
+    }
+
+    //注册方法
+    public Boolean register() {
+        boolean judge;//判断
+        //使用循环注册用户，若密码正确注册成功，若不正确，循环设置密码
+        System.out.println("请输入您真实姓名：");
+        this.user = sc.next();
+        System.out.println("请输入您的手机号码,提示:手机号码必须是11位");
+            while (true) {
+                System.out.print("手机号码：");
+                this.tel = sc.next();
+                if (tel.length() == 11) {
+                    break;
+                } else
+                    System.out.println("手机号码格式错误，请重新输入");
+            }
+            System.out.println("请设置您的密码,提示：该密码仅为系统登录密码!");
+        System.out.print("密码：");
+        this.pass = sc.next();
+            while (true){
+                System.out.print("请确定您的密码：");
+                String pass2 = sc.next();//用于密码确认
+                if (this.pass.equals(pass2)) {//判断两次密码是否相同
+                    System.out.println("请设置您的取款密码：");
+                    System.out.print("取款密码：");
+                    this.passq = sc.next();
+                    while (true){
+                        System.out.print("请确定您的取款密码：");
+                         pass2 = sc.next();//用于密码确认
+                        if (this.passq.equals(pass2)){//判断两次密码是否相同
+                            System.out.println("注册成功！");
+                            judge = true;//注册成功 判断为true 并结束循环 否则两次密码不一致，重新设置密码
+                            break;
+                        }else{
+                            System.out.println("两次密码输入不一致，请重新输入！");
+                        }
+                    }
+                    break;
+                } else {
+                    System.out.println("两次密码输入不一致，请重新输入！");
+                }
+            }
+        return judge;//注册成功返回ture
+    }
+
+    //存取款菜单
+    public void menu() {
+        System.out.println("*********************************");
+        System.out.println("**************1.存款**************");
+        System.out.println("**************2.取款**************");
+        System.out.println("*********************************");
+        System.out.println("请选择您输入序号选择要办理的业务:");
+    }
+
+    //存款方法
+    public void deposid() {
+        System.out.println("请输入存款金额：");
+        double money = sc.nextInt();
+        this.setMoney(money);//将取款金额赋值给交易金额
+        this.setAddBalance();//调用余额增加方法
+        System.out.println("存款成功");
+        System.out.println("账户余额：" + this.getBalance());
+        System.out.println("输入Q返回菜单，输入N退出系统！");
+        char a = sc.next().charAt(0);//接受用户指令
+        if (a == 'Q'){
+            this.menu();
+        }else{
+            if (a == 'N'){
+                System.out.println("请携带好随身物品，欢迎下次光临！");
+            }
+        }
+    }
+
+    //取款方法
+    public void withdrawals() {
+        if (this.getBalance() <= 0) {
+            System.out.println("账户余额不足，无法取款");
+        } else {
+            System.out.println("请输入您的取款密码：");
+            while(true) {
+                System.out.print("取款密码：");
+                String pass = sc.next();
+                if (pass.equals(this.passq)){
+                    System.out.println("请输入您的取款金额：");
+                    break;
+                }else{
+                    System.out.println("密码输入错误，请重新输入！");
+                }
+            }
+            //如果取款金额小于等于余额可以取款
+            while (true) {
+                double money = sc.nextDouble();
+                if (money <= this.getBalance()) {
+                    this.setMoney(money);//将取款金额赋值给交易金额
+                    this.setSubBalance();//调用余额减少方法
+                    System.out.println("取款成功");
+                    System.out.println("账户余额：" + this.getBalance());
+                    System.out.println("输入Q返回菜单，输入N退出系统！");
+                    char a = sc.next().charAt(0);//接受用户指令
+                    if (a == 'Q'){
+                        this.menu();
+                    }else{
+                        if (a == 'N'){
+                            System.out.println("请携带好随身物品，欢迎下次光临！");
+                        }
+                    }
+                    break;
+                } else {
+                    System.out.println("账户余额不足，请重新输入!");
+                }
+            }
+        }
+    }
+
+    //账户信息显示方法
+    public void infor() {
+        System.out.println("您的账户信息如下：");
+        System.out.println("用户名：" + this.getUser());
+        System.out.println("手机号：" + this.getTel());
+        System.out.println("余额：" + this.getBalance());
+    }
+
+    //登录方法
+    public void login() {
+        while (true) {
+            System.out.println("请输入您的用户名：");
+            String name = sc.next();
+            System.out.println("请输入您的密码：");
+            String pass = sc.next();
+            if (name.equals(this.user) && pass.equals(this.pass)) {
+                System.out.println("登录成功！");
+                break;
+            } else {
+                System.out.println("用户名或密码输入错误，请重新输入！");
+            }
+        }
+
+
+    }
+
+
+}
+package Bank;
+
+import java.util.*;
+
+public class Bank {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Bankoop oop = new Bankoop();
+        Bankoop.welcome();
+        int num = sc.nextInt();
+        switch (num) {
+            case 1: //调用注册方法进行用户开户
+                if (oop.register()) {
+                    System.out.println("首次开户需要扣除10元手续费，请存款");
+                    System.out.println("请输入您的预存金额");
+                    double money = sc.nextDouble();
+                    oop.setMoney(money);//将预存款放进交易金额中
+                    oop.setAddBalance();//调用增加余额方法进行存款
+                    oop.setMoney(10);//开户成功，收付费10元
+                    oop.setSubBalance(); //调用减少余额方法设置余额-10元
+                    oop.infor();//调用用户信息方法显示用户信息
+                    System.out.println("请返回主页进行登录！");
+                    System.out.println("输入Y进入登录页面，输入N退出系统");
+                    char a = sc.next().charAt(0);
+                    switch (a) {
+                        case 'Q':
+                            oop.login();//调用登录方法登录
+                            oop.menu();//调用存取款菜单方法
+                            num = sc.nextInt();
+                            switch (num) {
+                                case 1:
+                                    oop.deposid();//调用存款方法进行存款
+                                    break;
+                                case 2:
+                                    oop.withdrawals();//调用取款方法
+                                    break;
+                            }
+                            break;
+                        case 'N':
+                            break;
+                    }
+                }
+            case 2:
+                oop.login();
+                oop.menu();//调用menu方法菜单选择存取款业务
+                num = sc.nextInt();
+                switch (num) {
+                    case 1:
+                        oop.deposid();//调用存款方法进行存款
+                        break;
+                    case 2:
+                        oop.withdrawals();//调用取款方法
+                        break;
+                }
+                break;
+            case 3:
+                System.out.println("请携带好随身物品，欢迎下次光临！");
+                break;
+        }
+
+    }
+}
