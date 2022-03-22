@@ -1,0 +1,85 @@
+package oop;
+
+import java.util.Scanner;
+
+public class MyTime {
+    public int hour;
+    public int minute;
+    public int second;
+    public MyTime (){
+        this.hour = 12;
+        this.minute = 30;
+        this.second = 45;
+
+    }
+    public int addSecond (int sec){
+        this.second = second + sec;
+        return this.second;
+    }
+    public int addMinute (int min){
+        this.minute = minute + min;
+        return this.minute;
+    }
+    public int addHour (int hou){
+        this.hour = hour + hou;
+        return this.hour;
+    }
+    public int subSecond (int sec){
+        this.second = second - sec;
+        return this.second;
+    }
+    public int subMinute (int min){
+        this.minute = minute - min;
+        return this.minute;
+    }
+    public int subHour (int hou){
+        this.hour = hour - hou;
+        return this.hour;
+    }
+    Scanner sc = new Scanner(System.in);
+    public void addtime (){
+        System.out.println("请输入要增加的小时");
+        int hou = sc.nextInt();
+        this.addHour(hou);
+        System.out.println("请输入要增加的分钟");
+        int min = sc.nextInt();
+        this.addMinute(min);
+        System.out.println("请输入要增加的秒数");
+        int sec = sc.nextInt();
+        this.addSecond(sec);
+        System.out.println("增加后时间为:"+this.hour+"时"+this.minute+"分"+this.second+"秒");
+    }
+    public void subtime (){
+        System.out.println("请输入要减少的小时");
+        int hour = sc.nextInt();
+        this.subHour(hour);
+        System.out.println("请输入减少的分钟");
+        int minu = sc.nextInt();
+        this.subMinute(minu);
+        System.out.println("请输入减少的秒数");
+        int seco = sc.nextInt();
+        this.subSecond(seco);
+        System.out.println("减少后的时间为:"+this.hour+"时"+this.minute+"分"+this.second+"秒");
+    }
+
+    public void defaa (){
+        MyTime mt = new MyTime();
+        System.out.println("默认时间为:"+mt.hour+"时"+mt.minute+"分"+mt.second+"秒");
+    }
+
+}
+package Mxdx;
+import oop.MyTime;
+
+import java.util.Scanner;
+
+public class MytimeTest {
+    public static void main (String [] args){
+        MyTime mt = new MyTime();
+        mt.defaa();
+        mt.addtime();
+        mt.subtime();
+
+
+    }
+}
